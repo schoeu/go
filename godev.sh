@@ -24,19 +24,21 @@ showHelp(){
 
 # Login dev
 loginDev(){
+    
     if [ $# != 1 ]
     then
         echo 'Need one argument.'
         exit 1
     fi
+    
+    devName=`echo $vpsList | tr ',' '\n' | grep "$1" | sed 's/^ //' | cut -d" " -f2`
 
-    dev=$vpsList | tr ',' '\n' | sed 's/^ //' | grep $1 | cut -d" " -f2
-    echo "Connectting "$user@$dev
+    echo "Connectting $user@$devName"
     ssh $user@$dev
 }
 
 # Process arguments.
-while getopts lh: option
+while getopts hl option
 do
     case "$option"
     in
@@ -50,15 +52,10 @@ do
             ;;
     esac
 done
+
 if [ $OPTIND -eq 1 ]
 then
     loginDev $1
-
 fi
-
-
-
-
-
 
 
